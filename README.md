@@ -10,3 +10,11 @@ Login
 POST -> http://localhost:8080/login
 {"email" : "deysiane.sousa06@hotmail.com", "password" : "teste1234"}
 
+A rota "/Home" não esta liberada para acesso sem token jwt para isso é necessário passar o JWT (Token) que gerado no login.
+
+Acessar
+http://localhost:8080/home
+
+Irá retornar mensagem de sucesso
+
+Pronto Autenticação implementada com sucesso!
