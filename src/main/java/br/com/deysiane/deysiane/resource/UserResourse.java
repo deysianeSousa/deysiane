@@ -6,13 +6,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.deysiane.deysiane.domain.User;
 import br.com.deysiane.deysiane.exception.EmailExistException;
+import br.com.deysiane.deysiane.exception.IdUserNotFoundException;
+import br.com.deysiane.deysiane.keys.ErrorKey;
 import br.com.deysiane.deysiane.services.UserService;
 
 @RestController
@@ -32,7 +33,7 @@ public class UserResourse {
 	public ResponseEntity<User> updateUser(@RequestBody User user, @PathVariable("id") Long id){
 		user.setId(id);
 		user = service.updateUser(user);
-		return new ResponseEntity<User>(user, HttpStatus.NO_CONTENT);
+		return new ResponseEntity<User>(user, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value ="/{id}", method = RequestMethod.GET)
@@ -41,16 +42,25 @@ public class UserResourse {
     	return new ResponseEntity<User>(user, HttpStatus.OK);
   	}
 	
-	@RequestMapping(value ="/perfil/{id}", method = RequestMethod.GET)
-	public ResponseEntity<User> userProfile(@PathVariable("id") Long id, @RequestHeader (value="token", required = false) String token){
-		User user =  service.userProfile(id, token);
-		return new ResponseEntity<User>(user, HttpStatus.OK);
+	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
+	public ResponseEntity<Void> delete(@PathVariable Long id) {
+		service.deleteUser(id);
+		return new ResponseEntity<Void> (HttpStatus.OK);
 	}
 	
 	
 	@ExceptionHandler(EmailExistException.class)
-    public ResponseEntity<String> handleEmailExistException() {
-  		return new ResponseEntity<String>("E-mail Existente", HttpStatus.OK);
+    public ResponseEntity<ErrorKey> handleEmailExistException() {
+		ErrorKey errorKey = new ErrorKey();
+		errorKey.setMensagem("E-mail Existente");
+  		return new ResponseEntity<ErrorKey>(errorKey, HttpStatus.OK);
     }
-
+	
+	@ExceptionHandler(IdUserNotFoundException.class)
+	public ResponseEntity<ErrorKey> handleUserNotFoundException() {
+		ErrorKey errorKey = new ErrorKey();
+		errorKey.setMensagem("Usuário não encontrado");
+		return new ResponseEntity<ErrorKey>(errorKey, HttpStatus.OK);
+	}
+	
 }

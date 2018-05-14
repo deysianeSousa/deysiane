@@ -4,23 +4,25 @@ import java.io.Serializable;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
 public class Phone implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue()
 	private Long id;
 	private String ddd;
 	private String number;
 
 	@ManyToOne
-	@JoinColumn(name="user_fk", referencedColumnName="id")
+	@JoinColumn(name="user_fk", referencedColumnName="cd_id")
+	@JsonBackReference
 	private User user;
 
 	public Long getId() {

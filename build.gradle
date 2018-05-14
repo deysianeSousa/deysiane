@@ -27,8 +27,12 @@ repositories {
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-security')
+	compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
+	runtime('com.h2database:h2')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
-	testCompile group: 'com.h2database', name: 'h2', version: '1.4.197'
 	compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
+	testCompile group: 'org.mockito', name: 'mockito-all', version: '1.10.19'
+	
 	
 }

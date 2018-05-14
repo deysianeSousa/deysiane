@@ -1,16 +1,12 @@
 package br.com.deysiane.deysiane.domain;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 
 
 @Entity
@@ -18,7 +14,8 @@ public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue()
+	@Column(name="cd_id")
 	private Long id;
 	
 	@Column(nullable = false)
@@ -32,12 +29,11 @@ public class User implements Serializable {
 	private LocalDateTime creationDate;
 	private LocalDateTime lastLogin;
 	private LocalDateTime alterationDate;
-	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy= "user", fetch= FetchType.EAGER, cascade = CascadeType.ALL)
+	@JsonManagedReference
 	private List<Phone> phones;
 	
-	@Column(nullable = false)
-	private String token;
 
 	public Long getId() {
 		return id;
@@ -103,11 +99,4 @@ public class User implements Serializable {
 		this.phones = phones;
 	}
 
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
 }
