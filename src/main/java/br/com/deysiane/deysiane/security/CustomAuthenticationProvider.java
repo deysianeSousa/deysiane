@@ -36,7 +36,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
     	}
     	
     	else {
-    		throw new InvalidLoginException("Usu·rio e/ou senha inv·lidos");
+    		throw new BadCredentialsException("Usu√°rio e/ou senha inv√°lidos");
     	}
     	
     	
